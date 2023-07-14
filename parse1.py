@@ -5,7 +5,7 @@ from bs4.element import Tag
 import pandas as pd
 from typing import List, Tuple
 
-EMPTY_COL_PLACEHOLDER = '*Col'
+# EMPTY_COL_PLACEHOLDER = '*Col'
 EMPTY_COL_PLACEHOLDER = None
 
 def get_table_from_xpath(html: str, xpath: str) -> str:
@@ -74,15 +74,11 @@ def extract_data(table: Tag) -> Tuple[List[str], List[List[str]]]:
     # Extract headers
     if table.find('thead'):
         # headers are gonna be used as column values
-        headers = [header.text.strip() for header in table.find('thead').find_all('th')]
+        headers = [(header.text.strip()) for header in table.find('thead').find_all('th')]
         data_rows = table.find('tbody').find_all('tr')
     else:
         headers = [header.text.strip() for header in all_rows[0].find_all(['th', 'td'])]
         data_rows = all_rows[1:]
-
-    # Check if headers were found
-    if not headers:
-        raise ValueError("No headers found")
 
     # If headers are less than the columns in data_rows, fill the headers with default values
     if data_rows:
@@ -94,7 +90,9 @@ def extract_data(table: Tag) -> Tuple[List[str], List[List[str]]]:
                 headers += [EMPTY_COL_PLACEHOLDER + str(i) for i in range(len(headers)+1, max_cols+1)]
             else:
                 headers += [''] * (max_cols - len(headers))
-
+    # Check if headers were found
+    if not headers:
+        raise ValueError("No headers found")
     data = []
     for row in data_rows:
         cols = row.find_all(['th', 'td'])
@@ -103,7 +101,8 @@ def extract_data(table: Tag) -> Tuple[List[str], List[List[str]]]:
         for col in cols:
             cols_data.append(col.text.strip())
         data.append(cols_data)
-
+    if not data:
+        raise ValueError("No data found")
     return headers, data
 
 def main(input_string: str, output_filename: str, xpath: str=None) -> None:
@@ -132,13 +131,22 @@ def main(input_string: str, output_filename: str, xpath: str=None) -> None:
     else:
         # The input is raw HTML
         html = input_string
-    
-    soup = BeautifulSoup(html, 'html.parser')
-    table = find_table(soup)
+    try:
+        soup = BeautifulSoup(html, 'html.parser')
+    except:
+        print('Invalid HTML')
+        return
+    try:
+        table = find_table(soup)
+    except:
+        print('No table found')
+        return
     headers, data = extract_data(table)
-
-    if not data:
-        raise ValueError("No data found")
+    # try:
+    #     headers, data = extract_data(table)
+    # except Exception as e:
+    #     print('Data not extracted: ', e)')
+    #     return
 
     try:
         df = pd.DataFrame(data, columns=headers)
