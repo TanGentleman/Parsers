@@ -1,12 +1,14 @@
 from lxml import html as lhtml
 from parse2 import url_to_html
 from bs4 import BeautifulSoup
+from bs4.element import Tag
 import pandas as pd
+from typing import List, Tuple
 
 EMPTY_COL_PLACEHOLDER = '*Col'
 EMPTY_COL_PLACEHOLDER = None
 
-def get_table_from_xpath(html: str, xpath: str):
+def get_table_from_xpath(html: str, xpath: str) -> str:
     """
     Extracts the first HTML table found at the given XPath in the HTML content.
 
@@ -29,7 +31,7 @@ def get_table_from_xpath(html: str, xpath: str):
     else:
         return None
 
-def find_table(soup):
+def find_table(soup: BeautifulSoup) -> Tag:
     """
     Finds the first table in the BeautifulSoup object.
 
@@ -51,7 +53,7 @@ def find_table(soup):
                 return find_table(child)
         raise ValueError("No table found")
 
-def extract_data(table):
+def extract_data(table: Tag) -> Tuple[List[str], List[List[str]]]:
     """
     Extracts the data from the table.
 
@@ -59,7 +61,7 @@ def extract_data(table):
         table (bs4.element.Tag): The table.
 
     Returns:
-        list of list: The data.
+        Tuple[List[str], List[List[str]]]: The headers and data.
 
     Raises:
         ValueError: If no data is found.
@@ -104,7 +106,7 @@ def extract_data(table):
 
     return headers, data
 
-def main(input_string: str, output_filename, xpath: str=None):
+def main(input_string: str, output_filename: str, xpath: str=None) -> None:
     """
     Scrapes a table from a webpage or raw HTML and saves it as a CSV file.
 
@@ -115,13 +117,22 @@ def main(input_string: str, output_filename, xpath: str=None):
     """
     if input_string.startswith('http://') or input_string.startswith('https://'):
         # The input is a URL
-        html = url_to_html(input_string)
+        try:
+            html = url_to_html(input_string)
+        except Exception as e:
+            # print(f"An error occurred: {e}")
+            print('Invalid URL')
+            return
         if xpath is not None:
-            html = get_table_from_xpath(html, xpath)
+            try:
+                html = get_table_from_xpath(html, xpath)
+            except:
+                print('Invalid XPath')
+                return
     else:
         # The input is raw HTML
         html = input_string
-
+    
     soup = BeautifulSoup(html, 'html.parser')
     table = find_table(soup)
     headers, data = extract_data(table)
