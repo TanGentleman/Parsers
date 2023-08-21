@@ -1,12 +1,23 @@
 from lxml import html as lhtml
-from parse2 import url_to_html
+from parse2 import url_to_html, extract_table, remove_style_tags
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 import pandas as pd
 from typing import List, Tuple
 
+DIRECTORY = 'outputs/parse1'
 # EMPTY_COL_PLACEHOLDER = '*Col'
 EMPTY_COL_PLACEHOLDER = None
+def save_string_to_file(content: str, filename: str) -> None:
+    """
+    Saves the given string content to a file.
+
+    Args:
+        content (str): The string content to be saved.
+        filename (str): The name of the file to save the content to.
+    """
+    with open(filename, 'w', encoding='utf-8') as file:
+        file.write(content)
 
 def get_table_from_xpath(html: str, xpath: str) -> str:
     """
@@ -22,14 +33,20 @@ def get_table_from_xpath(html: str, xpath: str) -> str:
     Raises:
         ValueError: If no table is found at the given XPath.
     """
+    # html = remove_style_tags(html)
+    table = extract_table(html, xpath)
+    table_html = lhtml.tostring(table, encoding='unicode')
+    return table_html
+    ###LEGACY
     tree = lhtml.fromstring(html)
     elements = tree.xpath(xpath)
     if elements:
         table_element = elements[0]
-        table_html = lhtml.tostring(table_element).decode()
+        table_html = lhtml.tostring(table_element, encoding='unicode')
         return table_html
     else:
-        return None
+        raise ValueError(f"No table found at XPath")
+    
 
 def find_table(soup: BeautifulSoup) -> Tag:
     """
@@ -54,7 +71,7 @@ def find_table(soup: BeautifulSoup) -> Tag:
         raise ValueError("No table found")
 
 def extract_data(table: Tag) -> Tuple[List[str], List[List[str]]]:
-    """
+    """OUTDATED
     Extracts the data from the table.
 
     Args:
@@ -72,9 +89,10 @@ def extract_data(table: Tag) -> Tuple[List[str], List[List[str]]]:
     if not all_rows:
         raise ValueError("No rows found")
     # Extract headers
-    if table.find('thead'):
+    thead = table.find('thead')
+    if thead:
         # headers are gonna be used as column values
-        headers = [(header.text.strip()) for header in table.find('thead').find_all('th')]
+        headers = [(header.text.strip()) for header in thead.find_all('th')]
         data_rows = table.find('tbody').find_all('tr')
     else:
         headers = [header.text.strip() for header in all_rows[0].find_all(['th', 'td'])]
@@ -90,16 +108,23 @@ def extract_data(table: Tag) -> Tuple[List[str], List[List[str]]]:
                 headers += [EMPTY_COL_PLACEHOLDER + str(i) for i in range(len(headers)+1, max_cols+1)]
             else:
                 headers += [''] * (max_cols - len(headers))
+    else:
+        print("No data found")
+        return
     # Check if headers were found
     if not headers:
         raise ValueError("No headers found")
     data = []
     for row in data_rows:
         cols = row.find_all(['th', 'td'])
-        # Replace newlines and multiple spaces in the column text
         cols_data = []
         for col in cols:
             cols_data.append(col.text.strip())
+        if len(headers) > max_cols:
+            if EMPTY_COL_PLACEHOLDER is not None:
+                cols_data += [EMPTY_COL_PLACEHOLDER + str(i) for i in range(max_cols+1, len(headers)+1)]
+            else:
+                cols_data += [''] * (len(headers) - max_cols)
         data.append(cols_data)
     if not data:
         raise ValueError("No data found")
@@ -128,11 +153,15 @@ def main(input_string: str, output_filename: str, xpath: str=None) -> None:
             except:
                 print('Invalid XPath')
                 return
+        if html is None:
+            print('No table found')
+            return
     else:
         # The input is raw HTML
         html = input_string
     try:
         soup = BeautifulSoup(html, 'html.parser')
+        print('soup obtained')
     except:
         print('Invalid HTML')
         return
@@ -141,15 +170,29 @@ def main(input_string: str, output_filename: str, xpath: str=None) -> None:
     except:
         print('No table found')
         return
-    headers, data = extract_data(table)
-    # try:
-    #     headers, data = extract_data(table)
-    # except Exception as e:
-    #     print('Data not extracted: ', e)')
+    ###LEGACY
+    # legacy = False
+    # if legacy:
+    #     try:
+    #         headers, data = extract_data(table)
+    #     except Exception as e:
+    #         print('Data not extracted: ', e)
+    #         return
+    #     try:
+    #         df = pd.DataFrame(data, columns=headers)
+    #         df.to_csv(f'{output_filename}.csv', index=False)
+    #     except Exception as e:
+    #         print(f"An error occurred: {e}")
     #     return
-
+    ### NEW
+    print('generating csv')
     try:
-        df = pd.DataFrame(data, columns=headers)
-        df.to_csv(f'{output_filename}.csv', index=False)
+        # df = pd.DataFrame(data, columns=headers)
+        dfs = pd.read_html(table.prettify())
+        if not dfs:
+            raise ValueError("No table found in HTML")
+        df = dfs[0]
+        df.to_csv(f'{DIRECTORY}/{output_filename}.csv', index=False)
     except Exception as e:
         print(f"An error occurred: {e}")
+    return

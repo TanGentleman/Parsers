@@ -5,9 +5,9 @@ from re import sub
 
 parser_func = parse1
 
-url = 'https://www.tomshardware.com/reviews/cpu-hierarchy,4312.html'
-xpath = '//*[@id="slice-container-V7teKs7ev9p3jsgMmVR9A-table-25"]/div[2]/table'
-output_filename = 'web_table'
+url = 'https://en.wikipedia.org/wiki/C%2B%2B'
+xpath = '//*[@id="mw-content-text"]/div[1]/table[2]'
+output_filename = 'example_cli_parse'
 
 # Takes a filename, returns a safely-formatted filename
 def sanitize_filename(filename):
@@ -24,8 +24,12 @@ def sanitize_filename(filename):
 def main(args):
     parser_func(*args)
 if __name__ == '__main__':
-    if len(cli_args) == 3:
-        cli_args[1] = sanitize_filename(cli_args[1])
+    cli_len = len(cli_args)
+    if (cli_len in [3,4]):
+        cli_args[2] = sanitize_filename(cli_args[2])
         main(cli_args[1:])
-    else:
+    elif len(cli_args) == 1:
+        print("Default cli_args used")
         main((url, output_filename, xpath))
+    else:
+        print("Bad CLI Arguments")
