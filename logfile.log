@@ -1,0 +1,51 @@
+INFO:root:Success! Execution time: 0.004987001419067383 seconds
+INFO:root:Success! Execution time: 0.004469633102416992 seconds
+INFO:root:Success! Execution time: 0.004312753677368164 seconds
+INFO:root:Success! Execution time: 0.0046329498291015625 seconds
+INFO:root:P2 Success! Execution time: 0.002807140350341797 seconds
+INFO:root:P2 Success! Execution time: 0.003058195114135742 seconds
+INFO:root:P2 Success! Execution time: 0.002744913101196289 seconds
+INFO:root:P2 Success! Execution time: 0.0028450489044189453 seconds
+INFO:root:P2 Success! Execution time: 0.0027570724487304688 seconds
+INFO:root:P1 Success! Execution time: 0.004628896713256836 seconds
+INFO:root:P1 Success! Execution time: 1.886634111404419 seconds
+INFO:root:P2 Success! Execution time: 1.891200065612793 seconds
+INFO:root:P2 Success! Execution time: 0.304980993270874 seconds
+INFO:root:P1 Success! Execution time: 0.32052087783813477 seconds
+INFO:root:P2 Success! Execution time: 0.49565696716308594 seconds
+INFO:root:P1 Success! Execution time: 0.5093340873718262 seconds
+INFO:root:P1 Success! Execution time: 0.3549981117248535 seconds
+INFO:root:P2 Success! Execution time: 0.35876011848449707 seconds
+INFO:root:P1 Success! Execution time: 0.3073151111602783 seconds
+INFO:root:P2 Success! Execution time: 0.3129148483276367 seconds
+INFO:root:P1 Success! Execution time: 0.3503549098968506 seconds
+INFO:root:P2 Success! Execution time: 0.357147216796875 seconds
+INFO:root:P2 Success! Execution time: 2.211573839187622 seconds
+INFO:root:P1 Success! Execution time: 2.227208137512207 seconds
+INFO:root:P2 Success! Execution time: 1.6494719982147217 seconds
+INFO:root:P1 Success! Execution time: 1.6590020656585693 seconds
+INFO:root:P2 Success! Execution time: 0.37610626220703125 seconds
+INFO:root:P1 Success! Execution time: 0.3927958011627197 seconds
+INFO:root:P2 Success! Execution time: 0.31110525131225586 seconds
+INFO:root:Quickest: P2
+INFO:root:P1 Success! Execution time: 0.312410831451416 seconds
+INFO:root:P1 Success! Execution time: 0.00482487678527832 seconds
+INFO:root:P2 Success! Execution time: 0.003231048583984375 seconds
+INFO:root:P1 Success! Execution time: 0.004139900207519531 seconds
+INFO:root:Parse2 completed faster by 21.95346694310067%
+INFO:root:P2 Success! Execution time: 0.003409862518310547 seconds
+INFO:root:P1 Success! Execution time: 0.004312276840209961 seconds
+INFO:root:Parse2 completed faster by 20.93%
+INFO:root:P2 Success! Execution time: 0.003776073455810547 seconds
+INFO:root:P1 Success! Execution time: 0.003952980041503906 seconds
+INFO:root:P2 Success! Execution time: 0.006411075592041016 seconds
+INFO:root:P1 Success! Execution time: 0.006306886672973633 seconds
+INFO:root:Parse2 completed faster by 0.71%
+INFO:root:P1 Success! Execution time: 0.004065752029418945 seconds
+INFO:root:P2 Success! Execution time: 0.004241943359375 seconds
+INFO:root:P1 Success! Execution time: 0.0023980140686035156 seconds
+INFO:root:P2 Success! Execution time: 0.002508878707885742 seconds
+INFO:root:Parse1 completed faster by 4.2521631644004945%
+INFO:root:P1 Success! Execution time: 0.0062007904052734375 seconds
+INFO:root:P2 Success! Execution time: 0.004337787628173828 seconds
+INFO:root:Parse2 completed faster by 30.04%

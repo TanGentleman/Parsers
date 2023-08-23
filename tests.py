@@ -82,6 +82,21 @@ def test12():
     return (input12, output_file12, xpath12)
 def test13():
     return (input13, output_file13, xpath13)
+def test14():
+    with open('html_strings/complex_table.html', 'r') as f:
+        html = f.read()
+    input14 = html
+    xpath14 = None
+    output_file14 = 'table14'
+    return (input14, output_file14, xpath14)
+def test15():
+    with open('html_strings/complex_table2.html', 'r') as f:
+        html = f.read()
+    input15 = html
+    xpath15 = None
+    output_file15 = 'table15'
+    return (input15, output_file15, xpath15)
 
-ACTIVE_SET = [test10]
+ACTIVE_SET = [test15]
 DEFAULT_PARSER = "parse1"
+RUN_BOTH_PARALLEL = True

@@ -5,6 +5,9 @@ from bs4.element import Tag
 import pandas as pd
 from typing import List, Tuple
 
+from time import time
+import logging
+
 DIRECTORY = 'outputs/parse1'
 # EMPTY_COL_PLACEHOLDER = '*Col'
 EMPTY_COL_PLACEHOLDER = None
@@ -130,7 +133,7 @@ def extract_data(table: Tag) -> Tuple[List[str], List[List[str]]]:
         raise ValueError("No data found")
     return headers, data
 
-def main(input_string: str, output_filename: str, xpath: str=None) -> None:
+def main(input_string: str, output_filename: str, xpath: str=None) -> float:
     """
     Scrapes a table from a webpage or raw HTML and saves it as a CSV file.
 
@@ -139,6 +142,16 @@ def main(input_string: str, output_filename: str, xpath: str=None) -> None:
         xpath (str): The XPath where the table is located.
         output_filename (str): The output file name.
     """
+    success = False
+
+    # Set up logging
+    logging.basicConfig(filename='logfile.log', level=logging.INFO)
+
+    # Start the timer
+    start_time = time()
+
+
+
     if input_string.startswith('http://') or input_string.startswith('https://'):
         # The input is a URL
         try:
@@ -185,7 +198,7 @@ def main(input_string: str, output_filename: str, xpath: str=None) -> None:
     #         print(f"An error occurred: {e}")
     #     return
     ### NEW
-    print('generating csv')
+    # print('generating csv')
     try:
         # df = pd.DataFrame(data, columns=headers)
         dfs = pd.read_html(table.prettify())
@@ -193,6 +206,11 @@ def main(input_string: str, output_filename: str, xpath: str=None) -> None:
             raise ValueError("No table found in HTML")
         df = dfs[0]
         df.to_csv(f'{DIRECTORY}/{output_filename}.csv', index=False)
+        success = True
     except Exception as e:
         print(f"An error occurred: {e}")
-    return
+        # End the timer
+    end_time = time()
+    execution_time = end_time - start_time
+    logging.info(f"{'P1 Success!' if success else 'Empty.'} Execution time: {execution_time} seconds")
+    return execution_time

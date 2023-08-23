@@ -4,6 +4,10 @@ import pandas as pd
 import requests
 import re
 
+from time import time
+import logging
+
+
 DIRECTORY = 'outputs/parse2'
 EXAMPLE_URL = 'https://www.vgchartz.com/gamedb/'
 EXAMPLE_XPATH = '//*[@id="generalBody"]/table[1]'
@@ -99,7 +103,7 @@ def table_to_df(table):
         raise ValueError("No table found in HTML")
     return dfs[0]
 
-def main(input_string, output_file, xpath = None):
+def main(input_string, output_file, xpath = None) -> float:
     """
     Scrapes a table from a webpage and saves it as a CSV file.
 
@@ -116,6 +120,15 @@ def main(input_string, output_file, xpath = None):
     # except Exception as e:
     #     print(f"STEP 1 FAIL")
     #     return
+    # Set up logging
+
+    success = False
+    logging.basicConfig(filename='logfile.log', level=logging.INFO)
+
+    # Start the timer
+    start_time = time()
+
+
     if input_string.startswith('http://') or input_string.startswith('https://'):
         # The input is a URL
         try:
@@ -135,9 +148,13 @@ def main(input_string, output_file, xpath = None):
     try:
         df = table_to_df(table)
         df.to_csv(f'{DIRECTORY}/{output_file}.csv', index=False)
+        success = True
     except:
         print("Failed to save csv file")
-
+    end_time = time()
+    execution_time = end_time - start_time
+    logging.info(f"{'P2 Success!' if success else 'Empty.'} Execution time: {execution_time} seconds")
+    return execution_time
 if __name__ == "__main__":
     """
     Scrapes a table from a webpage and saves it as a CSV file.
