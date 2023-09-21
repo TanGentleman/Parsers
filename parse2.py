@@ -7,6 +7,7 @@ import re
 from time import time
 import logging
 
+from bs4 import UnicodeDammit             # BeautifulSoup 4
 
 DIRECTORY = 'outputs/parse2'
 EXAMPLE_URL = 'https://www.vgchartz.com/gamedb/'
@@ -33,6 +34,24 @@ def url_to_html(url):
     response.encoding = 'utf-8'
     return response.text
 
+def decode_html(html_string):
+    """
+    Decodes the given HTML string into Unicode.
+
+    Args:
+        html_string (str): The HTML string to decode.
+
+    Returns:
+        str: The decoded Unicode string.
+    """
+    converted = UnicodeDammit(html_string)
+    if not converted.unicode_markup:
+        raise UnicodeDecodeError(
+            "Failed to detect encoding, tried [%s]",
+            ', '.join(converted.tried_encodings))
+        # print converted.original_encoding
+    return converted.unicode_markup
+
 def extract_table(html, xpath = None):
     """
     Extracts the first HTML table found at the given XPath in the HTML content.
@@ -48,7 +67,7 @@ def extract_table(html, xpath = None):
         ValueError: If no table is found at the given XPath.
     """
     # Convert HTML string to lxml Element
-
+    
     if xpath:
         tree = etree.HTML(html)
         tables = tree.xpath(xpath)
@@ -68,18 +87,20 @@ def extract_table(html, xpath = None):
         tree = etree.HTML(html)
         # Find the first table
         table = tree.find('.//table')
-        if table.tag == "table":
+        
+        if table is not None:
             print("Valid table found!")
+            for style_tag in table.xpath('//style'):
+                style_tag.getparent().remove(style_tag)
             return table
         else:
-            print("No table found!")
             raise ValueError(f"No table found! (XPATH==None)")
 
             
-def remove_style_tags(html):
+def remove_style_tags_regex(html: str) -> str:
     # Remove style tags
     return re.sub(r'<style.*?>.*?</style>', '', html, flags=re.DOTALL)
-        
+
 def table_to_df(table):
     """
     Converts an HTML table to a pandas DataFrame.
@@ -96,7 +117,8 @@ def table_to_df(table):
     # print(type(table), table, "<-- table \n")
     raw_html = etree.tostring(table, method='html').decode()
     # Remove the style tags from the HTML
-    # raw_html = remove_style_tags(raw_html)
+    if True:
+        raw_html = remove_style_tags_regex(raw_html)
     dfs = pd.read_html(raw_html)
     
     if not dfs:

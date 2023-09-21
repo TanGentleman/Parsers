@@ -1,9 +1,10 @@
 from parse1 import main as parse1
+from parse2 import main as parse2
 from sys import argv as cli_args
 from re import sub
 # from parse2 import main as parse2
 
-parser_func = parse1
+parser_func = parse2
 
 url = 'https://en.wikipedia.org/wiki/C%2B%2B'
 xpath = '//*[@id="mw-content-text"]/div[1]/table[2]'
@@ -24,6 +25,7 @@ def sanitize_filename(filename):
 def main(args):
     parser_func(*args)
 if __name__ == '__main__':
+    print("CLI Arguments: ", cli_args)
     cli_len = len(cli_args)
     if (cli_len in [3,4]):
         cli_args[2] = sanitize_filename(cli_args[2])

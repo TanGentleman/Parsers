@@ -96,7 +96,12 @@ def test15():
     xpath15 = None
     output_file15 = 'table15'
     return (input15, output_file15, xpath15)
+def test16():
+    input16 = 'https://en.wikipedia.org/wiki/Wikipedia:Random'
+    xpath16 = None
+    output_file16 = 'table16'
+    return (input16, output_file16, xpath16)
 
-ACTIVE_SET = [test15]
+ACTIVE_SET = [test2]
 DEFAULT_PARSER = "parse1"
 RUN_BOTH_PARALLEL = True

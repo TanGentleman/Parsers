@@ -49,3 +49,33 @@ INFO:root:Parse1 completed faster by 4.2521631644004945%
 INFO:root:P1 Success! Execution time: 0.0062007904052734375 seconds
 INFO:root:P2 Success! Execution time: 0.004337787628173828 seconds
 INFO:root:Parse2 completed faster by 30.04%
+INFO:root:P1 Success! Execution time: 0.284682035446167 seconds
+INFO:root:P2 Success! Execution time: 0.2653229236602783 seconds
+INFO:root:P2 Success! Execution time: 0.4360499382019043 seconds
+INFO:root:P1 Success! Execution time: 0.21654200553894043 seconds
+INFO:root:P1 Success! Execution time: 0.3292112350463867 seconds
+INFO:root:P1 Success! Execution time: 0.26247715950012207 seconds
+INFO:root:P1 Success! Execution time: 0.2735717296600342 seconds
+INFO:root:P2 Success! Execution time: 0.2750520706176758 seconds
+INFO:root:Parse1 completed faster by 0.5382038951087502%
+INFO:root:P1 Success! Execution time: 0.008208990097045898 seconds
+INFO:root:P2 Success! Execution time: 0.007554054260253906 seconds
+INFO:root:Parse2 completed faster by 7.98%
+INFO:root:P1 Success! Execution time: 0.005148172378540039 seconds
+INFO:root:P2 Success! Execution time: 0.0043790340423583984 seconds
+INFO:root:Parse2 completed faster by 14.94%
+INFO:root:P2 Success! Execution time: 0.0055620670318603516 seconds
+INFO:root:P1 Success! Execution time: 0.0064792633056640625 seconds
+INFO:root:Parse2 completed faster by 14.16%
+INFO:root:P1 Success! Execution time: 3.570080041885376 seconds
+INFO:root:P2 Success! Execution time: 3.570132255554199 seconds
+INFO:root:Parse1 completed faster by 0.0014625135733280265%
+INFO:root:P1 Success! Execution time: 0.9348227977752686 seconds
+INFO:root:P2 Success! Execution time: 0.9374361038208008 seconds
+INFO:root:Parse1 completed faster by 0.27877164479594047%
+INFO:root:P2 Success! Execution time: 0.4803452491760254 seconds
+INFO:root:P1 Success! Execution time: 0.48408985137939453 seconds
+INFO:root:Parse2 completed faster by 0.77%
+INFO:root:P2 Success! Execution time: 0.1695559024810791 seconds
+INFO:root:P1 Success! Execution time: 0.1737380027770996 seconds
+INFO:root:Parse2 completed faster by 2.41%
