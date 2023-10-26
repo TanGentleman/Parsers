@@ -101,7 +101,12 @@ def test16():
     xpath16 = None
     output_file16 = 'table16'
     return (input16, output_file16, xpath16)
-
-ACTIVE_SET = [test2]
+def test17():
+    input17 = '<table class="market_commodity_orders_table"><tbody><tr><th align="right">Price</th><th align="right">Quantity</th></tr><tr><td align="right" class="">$24.30</td><td align="right">7</td></tr><tr><td align="right" class="">$24.32</td><td align="right">1</td></tr><tr><td align="right" class="">$25.39</td><td align="right">1</td></tr><tr><td align="right" class="">$26.01</td><td align="right">25</td></tr><tr><td align="right" class="">$26.02</td><td align="right">2</td></tr><tr><td align="right" class="">$26.22 or more</td><td align="right">44</td></tr></tbody></table>'
+    # xpath17 = '//*[@id="mw-content-text"]/div[1]/div[16]/table'
+    xpath17 = None
+    output_file17 = 'table17'
+    return (input17, output_file17, xpath17)
+ACTIVE_SET = [test17]
 DEFAULT_PARSER = "parse1"
 RUN_BOTH_PARALLEL = True

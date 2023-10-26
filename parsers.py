@@ -5,11 +5,11 @@
     Output can be a list of tables, a table, or None.
     1. Make a class Parsnip
     2. Call the method parse() with the input and optional arguments
-
-
 """
 from parse2 import url_to_html, remove_style_tags_regex
 from pathlib import Path
+import parse1
+import parse2
 
 def text_to_tree(text: str) -> any:
     # Implement logic to convert text to a tree
@@ -33,16 +33,16 @@ def validate_source(source: str) -> tuple[str, any] or None:
             return None
     else:
         assert(source != "")
-        if Path(source).exists():
+        if len(source) < 200 and Path(source).exists():
             # Input source is a file
             path = Path(source)
             text = path.read_text()
-            if text == "":
-                print('Invalid HTML in file')
-                return None
         else:
             text = source
     try:
+        if text == "":
+            print('Empty HTML. Text/tree not generated')
+            return None
         tree = text_to_tree(text)
         return (text, tree)
     except:
@@ -50,7 +50,7 @@ def validate_source(source: str) -> tuple[str, any] or None:
         return None
 DEFAULT_PARSE_ALGO = "Parse1"
 class Parsnip:
-    def __init__(self, source, parse_algo = DEFAULT_PARSE_ALGO, XPATH = None, text = None, tree = None, tables = None):
+    def __init__(self, source, parse_algo = DEFAULT_PARSE_ALGO, XPATH = None, text = None, tree = None, soup = None, tables = None):
         if text is None:
             validation = validate_source(source)
             if validation is None:
@@ -61,6 +61,7 @@ class Parsnip:
         else:
             self.text = text
             self.tree = tree
+        self.soup = None
         self.parse_algo = parse_algo
         self.XPATH = XPATH
         self.tables = tables
@@ -68,6 +69,16 @@ class Parsnip:
     def get_tables(self):
         # Implement logic to retrieve all tables from input_data using xpath and parsing_algorithm if provided
         tables = []
+        if self.text:
+            if self.parse_algo == "Parse1":
+                if not self.soup:
+                    self.soup = parse1.html_to_soup(self.text)
+                    if not self.soup:
+                        print("No soup. No tables.")
+                        return None
+                tables = parse1.find_tables(self.soup)
+        else:
+            print("No text to parse")
         self.tables = tables
         return str(tables)
         pass

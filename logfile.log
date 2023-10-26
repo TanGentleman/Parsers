@@ -79,3 +79,6 @@ INFO:root:Parse2 completed faster by 0.77%
 INFO:root:P2 Success! Execution time: 0.1695559024810791 seconds
 INFO:root:P1 Success! Execution time: 0.1737380027770996 seconds
 INFO:root:Parse2 completed faster by 2.41%
+INFO:root:P1 Success! Execution time: 0.005765199661254883 seconds
+INFO:root:P2 Success! Execution time: 0.005110025405883789 seconds
+INFO:root:Parse2 completed faster by 11.36%

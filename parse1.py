@@ -7,6 +7,7 @@ from typing import List, Tuple
 
 from time import time
 import logging
+import io
 
 DIRECTORY = 'outputs/parse1'
 # EMPTY_COL_PLACEHOLDER = '*Col'
@@ -58,7 +59,7 @@ def remove_style_tags_bs4(soup: BeautifulSoup) -> BeautifulSoup:
         style_tag.decompose()
     return soup
 
-def find_table(soup: BeautifulSoup) -> Tag:
+def find_tables(soup: BeautifulSoup) -> List[Tag]:
     """
     Finds the first table in the BeautifulSoup object.
 
@@ -72,16 +73,12 @@ def find_table(soup: BeautifulSoup) -> Tag:
         ValueError: If no table is found.
     """
     # table = soup.find('table')
-    tables = soup.find_all('table')
+    tables = soup.find_all('table', recursive=True)
     if tables:
-        return tables[0]
+        return tables
     else:
-        for child in soup.children:
-            if child.name == 'table':
-                return find_table(child)
         print("No table found")
         return None
-        raise ValueError("No table found")
 
 def extract_data(table: Tag) -> Tuple[List[str], List[List[str]]]:
     """OUTDATED
@@ -143,6 +140,22 @@ def extract_data(table: Tag) -> Tuple[List[str], List[List[str]]]:
         raise ValueError("No data found")
     return headers, data
 
+def html_to_soup(html: str) -> BeautifulSoup:
+    """
+    Converts the given HTML string to a BeautifulSoup object.
+
+    Args:
+        html (str): The HTML string.
+
+    Returns:
+        BeautifulSoup: The BeautifulSoup object.
+    """
+    soup = BeautifulSoup(html, 'html.parser')
+    if not soup:
+        return None
+    # Remove style tags
+    return remove_style_tags_bs4(soup)
+
 def main(input_string: str, output_filename: str, xpath: str=None) -> float:
     """
     Scrapes a table from a webpage or raw HTML and saves it as a CSV file.
@@ -159,8 +172,6 @@ def main(input_string: str, output_filename: str, xpath: str=None) -> float:
 
     # Start the timer
     start_time = time()
-
-
 
     if input_string.startswith('http://') or input_string.startswith('https://'):
         # The input is a URL
@@ -182,15 +193,13 @@ def main(input_string: str, output_filename: str, xpath: str=None) -> float:
     else:
         # The input is raw HTML
         html = input_string
-    try:
-        soup = BeautifulSoup(html, 'html.parser')
-        soup = remove_style_tags_bs4(soup)
-        print('soup obtained')
-    except:
-        print('Invalid HTML')
+    soup = html_to_soup(html)
+    if soup is None:
+        print('Invalid soup')
         return
+    print('soup obtained')
     try:
-        table = find_table(soup)
+        table = find_tables(soup)[0]
     except:
         print('No table found')
         return
