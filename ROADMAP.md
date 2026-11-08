@@ -41,9 +41,9 @@ stubs, the live-URL `tests.py`, `logfile.log`, and fixtures no test reads.
 Base for every branch is the import commit `1d0d633be4f8` (Parsers-1's first commit).
 
 ```bash
-git clone https://github.com/TanGentleman/kranti-sandbox
+git clone https://github.com/TanGentleman/kranti-sandbox   # private: needs access
 git clone https://github.com/TanGentleman/Parsers && cd Parsers
-git -C ../kranti-sandbox format-patch --relative=Parsers --stdout 1d0d633be4f8..origin/Parsers-N > stack.patch
+git -C ../kranti-sandbox format-patch --relative=Parsers --stdout 1d0d633be4f8..origin/Parsers-5 > stack.patch
 git am stack.patch
 uv sync --locked && uv run pytest   # from Parsers-2 on
 ```
