@@ -3,6 +3,7 @@ from lxml import html as lhtml
 import pandas as pd
 import requests
 import re
+import io
 
 from time import time
 import logging
@@ -119,7 +120,7 @@ def table_to_df(table):
     # Remove the style tags from the HTML
     if True:
         raw_html = remove_style_tags_regex(raw_html)
-    dfs = pd.read_html(raw_html)
+    dfs = pd.read_html(io.StringIO(raw_html))
     
     if not dfs:
         raise ValueError("No table found in HTML")

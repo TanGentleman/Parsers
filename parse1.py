@@ -211,7 +211,7 @@ def main(input_string: str, output_filename: str, xpath: str=None) -> float:
         else:
             polished_html = table_html
         #REMEMBER TO INCLUDE POLISHED IN LINE BELOW
-        dfs = pd.read_html(polished_html)
+        dfs = pd.read_html(io.StringIO(polished_html))
         if not dfs:
             raise ValueError("No table found in HTML")
         # save all the tables to csv
