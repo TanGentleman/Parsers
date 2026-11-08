@@ -74,7 +74,7 @@ def test11():
     output_file11 = 'table11'
     return (input11, output_file11, xpath11)
 def test12():
-    with open('html_strings/nasty,html', 'r') as f:
+    with open('html_strings/nasty.html', 'r') as f:
         html = f.read()
     input12 = html
     xpath12 = None
