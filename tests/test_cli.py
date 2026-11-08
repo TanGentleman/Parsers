@@ -1,6 +1,7 @@
 import functools
 import http.server
 import io
+import socket
 import subprocess
 import sys
 import threading
@@ -102,7 +103,9 @@ def test_stdin(monkeypatch):
     assert read_source("-") == b"<table><tr><td>1</td></tr></table>"
 
 
-def test_fetch_url_against_local_server():
+@pytest.fixture
+def server():
+    """Serve tests/fixtures on 127.0.0.1 and record each request's User-Agent."""
     agents = []
 
     class Handler(http.server.SimpleHTTPRequestHandler):
@@ -113,16 +116,45 @@ def test_fetch_url_against_local_server():
         def log_message(self, *args):
             pass
 
-    server = http.server.ThreadingHTTPServer(
+    httpd = http.server.ThreadingHTTPServer(
         ("127.0.0.1", 0), functools.partial(Handler, directory=str(FIXTURES))
     )
-    threading.Thread(target=server.serve_forever, daemon=True).start()
-    try:
-        html = fetch_url(f"http://127.0.0.1:{server.server_port}/page.html")
-    finally:
-        server.shutdown()
+    httpd.agents = agents
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    yield httpd
+    httpd.shutdown()
+    httpd.server_close()
+
+
+def test_fetch_url_against_local_server(server):
+    html = fetch_url(f"http://127.0.0.1:{server.server_port}/page.html")
     assert html == Path(fixture("page.html")).read_bytes()
-    assert agents == [USER_AGENT]
+    assert server.agents == [USER_AGENT]
+
+
+def test_url_to_csvs_over_http(server, tmp_path, capsys):
+    assert main([f"http://127.0.0.1:{server.server_port}/page.html", "-o", str(tmp_path)]) == 0
+    assert capsys.readouterr().out.split() == [str(tmp_path / "table_1.csv"), str(tmp_path / "table_2.csv")]
+
+
+def unused_port() -> int:
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        return sock.getsockname()[1]
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        pytest.param("http://127.0.0.1:{port}/missing.html", id="http-404"),
+        pytest.param("http://127.0.0.1:{closed}/page.html", id="connection-refused"),
+    ],
+)
+def test_unreadable_url_exits_2(server, tmp_path, capsys, url):
+    url = url.format(port=server.server_port, closed=unused_port())
+    assert main([url, "-o", str(tmp_path)]) == 2
+    assert f"cannot read {url}" in capsys.readouterr().err
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_console_script(tmp_path):
