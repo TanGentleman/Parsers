@@ -10,7 +10,9 @@ import logging
 
 from bs4 import UnicodeDammit             # BeautifulSoup 4
 
-DIRECTORY = 'outputs/parse2'
+import os
+
+DIRECTORY = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'outputs/parse2')
 EXAMPLE_URL = 'https://www.vgchartz.com/gamedb/'
 EXAMPLE_XPATH = '//*[@id="generalBody"]/table[1]'
 EXAMPLE_OUTPUT_FILE = 'example_table'
@@ -170,6 +172,7 @@ def main(input_string, output_file, xpath = None) -> float:
         return
     try:
         df = table_to_df(table)
+        os.makedirs(DIRECTORY, exist_ok=True)
         df.to_csv(f'{DIRECTORY}/{output_file}.csv', index=False)
         success = True
     except:

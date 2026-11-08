@@ -214,6 +214,7 @@ def main(input_string: str, output_filename: str, xpath: str=None) -> float:
         dfs = pd.read_html(io.StringIO(polished_html))
         if not dfs:
             raise ValueError("No table found in HTML")
+        os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
         # save all the tables to csv
         if (len(dfs) > 1) and (SAVE_ALL_TABLES):
             # make a folder called output_filename
