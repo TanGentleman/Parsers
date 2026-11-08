@@ -35,6 +35,7 @@ stubs, the live-URL `tests.py`, `logfile.log`, and fixtures no test reads.
   ruff 0.17.4; all were already latest in `uv.lock`), CI on Python 3.11 and 3.15 with uv 0.13.7 and
   SHA-pinned actions, URL tests through a local HTTP server (404 and connection refused exit 2), and a
   README with usage and exit-code tables. The Wikipedia example was run live on 2026-11-08.
+- Parsers-6: README cut to 53 words; details moved to IMPLEMENTATION.md.
 
 ## Applying a branch upstream
 
@@ -43,7 +44,7 @@ Base for every branch is the import commit `1d0d633be4f8` (Parsers-1's first com
 ```bash
 git clone https://github.com/TanGentleman/kranti-sandbox   # private: needs access
 git clone https://github.com/TanGentleman/Parsers && cd Parsers
-git -C ../kranti-sandbox format-patch --relative=Parsers --stdout 1d0d633be4f8..origin/Parsers-5 > stack.patch
+git -C ../kranti-sandbox format-patch --relative=Parsers --stdout 1d0d633be4f8..origin/Parsers-6 > stack.patch
 git am stack.patch
 uv sync --locked && uv run pytest   # from Parsers-2 on
 ```
