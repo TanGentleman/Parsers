@@ -32,7 +32,7 @@ stubs, the live-URL `tests.py`, `logfile.log`, and fixtures no test reads.
   (`uv run pytest`, also passing on Python 3.11).
 - Parsers-3: README with install command and a fixture example, GitHub Actions CI (ruff + pytest, Python 3.11 and 3.14,
   both run locally; workflow checked with actionlint).
-- Parsers-4: remove the legacy scripts and fixtures; the CLI covers them.
+- Parsers-4: remove the legacy scripts and `html_strings/` (10 of 16 files); add `python -m parsers`. 18 tests.
 
 ## Applying a branch upstream
 
