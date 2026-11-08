@@ -1,8 +1,6 @@
 __pycache__/
 .DS_Store
-outputs/*
 *.ipynb
-logfile.log
 .venv/
 .pytest_cache/
 .ruff_cache/

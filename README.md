@@ -47,5 +47,3 @@ uv sync
 uv run pytest          # offline, uses tests/fixtures
 uv run ruff check && uv run ruff format --check
 ```
-
-The older `parse1.py`, `parse2.py`, `parse.py` and `parsers.py` scripts predate the CLI; see `ROADMAP.md`.

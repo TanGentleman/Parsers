@@ -25,4 +25,3 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 110
 src = ["src"]
-extend-exclude = ["parse.py", "parse1.py", "parse2.py", "parsers.py", "cli_parse.py", "tests.py"]
