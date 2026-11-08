@@ -53,3 +53,7 @@ uv sync && uv run pytest   # from Parsers-2 on
 - Name: `parsers` is taken on PyPI ("Collection of reusable parsing utilities"). Pick another name before publishing.
 
 - Confirm cutting `parse1.py`, `parse2.py`, `parse.py`, `parsers.py` (`Parsnip`), `cli_parse.py` and `tests.py` (Parsers-4).
+- CI has not run on GitHub: nested workflows don't run in kranti-sandbox. The same commands pass locally on
+  3.11 and 3.14. Check the first Actions run after applying Parsers-3.
+- `git am` prints "new blank line at EOF" for `tests/fixtures/spans.html`; it is a byte-for-byte copy of
+  upstream `html_strings/complex_table.html`, so the warning is expected.
