@@ -30,7 +30,8 @@ stubs, the live-URL `tests.py`, `logfile.log`, and fixtures no test reads.
 - Parsers-1: import upstream, this roadmap, fixes so `parse1`/`parse2` run on current pandas.
 - Parsers-2: `parsers` CLI (`src/parsers/cli.py`, about 100 lines), pyproject + `uv.lock`, 17 offline tests
   (`uv run pytest`, also passing on Python 3.11).
-- Parsers-3: README a stranger gets in 30 seconds, working example, GitHub Actions CI.
+- Parsers-3: README with install command and a fixture example, GitHub Actions CI (ruff + pytest, Python 3.11 and 3.14,
+  both run locally; workflow checked with actionlint).
 - Parsers-4: remove the legacy scripts and fixtures; the CLI covers them.
 
 ## Applying a branch upstream
