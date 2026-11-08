@@ -28,7 +28,8 @@ stubs, the live-URL `tests.py`, `logfile.log`, and fixtures no test reads.
 ## Stack
 
 - Parsers-1: import upstream, this roadmap, fixes so `parse1`/`parse2` run on current pandas.
-- Parsers-2: `parsers` CLI package (`src/parsers`), pyproject + `uv.lock`, offline pytest suite with local fixtures.
+- Parsers-2: `parsers` CLI (`src/parsers/cli.py`, about 100 lines), pyproject + `uv.lock`, 17 offline tests
+  (`uv run pytest`, also passing on Python 3.11).
 - Parsers-3: README a stranger gets in 30 seconds, working example, GitHub Actions CI.
 - Parsers-4: remove the legacy scripts and fixtures; the CLI covers them.
 
@@ -45,5 +46,9 @@ uv sync && uv run pytest   # from Parsers-2 on
 ```
 
 ## Needs Tan
+
+- Numbers: pandas turns number-like cells into numbers, so `1.20` is written as `1.2` and `1,234` as `1234`.
+  Keeping the raw cell text would mean replacing `read_html` with our own cell walk. Kept pandas for now.
+- Name: `parsers` is taken on PyPI ("Collection of reusable parsing utilities"). Pick another name before publishing.
 
 - Confirm cutting `parse1.py`, `parse2.py`, `parse.py`, `parsers.py` (`Parsnip`), `cli_parse.py` and `tests.py` (Parsers-4).
