@@ -132,3 +132,14 @@ def test_console_script(tmp_path):
     )
     assert result.returncode == 0, result.stderr
     assert len(result.stdout.split()) == 2
+
+
+def test_python_dash_m(tmp_path):
+    result = subprocess.run(
+        [sys.executable, "-m", "parsers", fixture("spans.html"), "-o", str(tmp_path)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert (tmp_path / "table_1.csv").exists()
