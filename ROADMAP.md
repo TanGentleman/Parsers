@@ -37,18 +37,6 @@ stubs, the live-URL `tests.py`, `logfile.log`, and fixtures no test reads.
   README with usage and exit-code tables. The Wikipedia example was run live on 2026-11-08.
 - Parsers-6: README cut to 53 words; details moved to IMPLEMENTATION.md.
 
-## Applying a branch upstream
-
-Base for every branch is the import commit `1d0d633be4f8` (Parsers-1's first commit).
-
-```bash
-git clone https://github.com/TanGentleman/kranti-sandbox   # private: needs access
-git clone https://github.com/TanGentleman/Parsers && cd Parsers
-git -C ../kranti-sandbox format-patch --relative=Parsers --stdout 1d0d633be4f8..origin/Parsers-6 > stack.patch
-git am stack.patch
-uv sync --locked && uv run pytest   # from Parsers-2 on
-```
-
 ## Needs Tan
 
 - Numbers: pandas turns number-like cells into numbers, so `1.20` is written as `1.2` and `1,234` as `1234`.
