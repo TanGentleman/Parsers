@@ -1,0 +1,27 @@
+[project]
+name = "parsers"
+version = "0.1.0"
+description = "Turn the HTML tables on a web page or in a file into CSV files."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["lxml>=6.1.3", "pandas>=3.1.1"]
+
+[project.scripts]
+parsers = "parsers.cli:run"
+
+[dependency-groups]
+dev = ["pytest==9.2.0", "ruff==0.17.4"]
+
+[build-system]
+requires = ["hatchling>=1.33.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/parsers"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+src = ["src"]

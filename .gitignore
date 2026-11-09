@@ -1,4 +1,6 @@
-__pycache__/*
+__pycache__/
 .DS_Store
-outputs/*
 *.ipynb
+.venv/
+.pytest_cache/
+.ruff_cache/
